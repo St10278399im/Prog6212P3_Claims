@@ -1,0 +1,69 @@
+﻿@model CLAIMS_Application.Part2.Models.MonthlyClaim
+@{
+    ViewData["Title"] = "Claim Details";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title">Claim Details</h3>
+                    <span class="badge bg-@(Model.Status == ClaimStatus.Approved ? "success" : Model.Status == ClaimStatus.Rejected ? "danger" : "warning")">
+                        @Model.Status
+                    </span>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Claim ID:</dt>
+                        <dd class="col-sm-8">@Model.Id</dd>
+
+                        <dt class="col-sm-4">Title:</dt>
+                        <dd class="col-sm-8">@Model.Title</dd>
+
+                        <dt class="col-sm-4">Description:</dt>
+                        <dd class="col-sm-8">@Model.Description</dd>
+
+                        <dt class="col-sm-4">Lecturer Name:</dt>
+                        <dd class="col-sm-8">@Model.LecturerName</dd>
+
+                        <dt class="col-sm-4">Hours Worked:</dt>
+                        <dd class="col-sm-8">@Model.HoursWorked.ToString("F2")</dd>
+
+                        <dt class="col-sm-4">Hourly Rate:</dt>
+                        <dd class="col-sm-8">R @Model.HourlyRate.ToString("F2")</dd>
+
+                        <dt class="col-sm-4">Total Amount:</dt>
+                        <dd class="col-sm-8"><strong>R @Model.TotalAmount.ToString("F2")</strong></dd>
+
+                        <dt class="col-sm-4">Submitted Date:</dt>
+                        <dd class="col-sm-8">@Model.SubmittedDate.ToString("yyyy-MM-dd HH:mm")</dd>
+
+                        @if (!string.IsNullOrEmpty(Model.AdditionalNotes))
+                        {
+                            <dt class="col-sm-4">Additional Notes:</dt>
+                            <dd class="col-sm-8">@Model.AdditionalNotes</dd>
+                        }
+
+                        @if (Model.Status != ClaimStatus.Pending)
+                        {
+                            <dt class="col-sm-4">Reviewed By:</dt>
+                            <dd class="col-sm-8">@Model.ReviewedBy</dd>
+
+                            <dt class="col-sm-4">Reviewed Date:</dt>
+                            <dd class="col-sm-8">@Model.ReviewedDate?.ToString("yyyy-MM-dd HH:mm")</dd>
+
+                            <dt class="col-sm-4">Review Notes:</dt>
+                            <dd class="col-sm-8">@Model.ReviewNotes</dd>
+                        }
+                    </dl>
+
+                    <div class="mt-4">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+                        <a asp-controller="Dashboard" asp-action="Index" class="btn btn-secondary">Back to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

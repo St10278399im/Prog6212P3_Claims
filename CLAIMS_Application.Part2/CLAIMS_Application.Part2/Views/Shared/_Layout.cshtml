@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Contract Claim System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" />
+    <style>
+        body {
+            min-height: 100vh;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            font-weight: 600;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-controller="Dashboard" asp-action="Index">
+                    <i class="bi bi-file-earmark-text me-2"></i> Contract Claim System
+                </a>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="navbar-nav ms-auto">
+                        <span class="navbar-text me-3">
+                            <i class="bi bi-person-circle me-1"></i> Welcome, @User.FindFirst(System.Security.Claims.ClaimTypes.GivenName)?.Value
+                        </span>
+                        <a class="nav-link text-light" asp-controller="Account" asp-action="Logout">
+                            <i class="bi bi-box-arrow-right me-1"></i> Logout
+                        </a>
+                    </div>
+                }
+            </div>
+        </nav>
+    </header>
+
+    <main role="main" class="container-fluid py-4">
+        @RenderBody()
+    </main>
+
+    <footer class="border-top footer text-muted mt-auto">
+        <div class="container text-center py-3">
+            &copy; 2024 - Contract Monthly Claim System
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

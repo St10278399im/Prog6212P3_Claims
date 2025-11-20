@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "Import Claims";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Import Claims from CSV</h3>
+                </div>
+                <div class="card-body">
+
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show">
+                            @TempData["SuccessMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            @TempData["ErrorMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    <div class="alert alert-info">
+                        <h5>CSV Format Requirements:</h5>
+                        <ul class="mb-2">
+                            <li>File must be in CSV format</li>
+                            <li>First row must contain headers</li>
+                            <li>Required columns: Title, Description, HoursWorked, HourlyRate</li>
+                            <li>Optional columns: AdditionalNotes</li>
+                        </ul>
+                        <p class="mb-0">
+                            <a href="~/sample/claims_template.csv" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-download"></i> Download CSV Template
+                            </a>
+                        </p>
+                    </div>
+
+                    <form asp-action="ImportClaims" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="file" class="form-label">Select CSV File</label>
+                            <input type="file" name="file" class="form-control" accept=".csv" required />
+                            <div class="form-text">Maximum file size: 5MB</div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-upload"></i> Import Claims
+                            </button>
+                            <a asp-controller="Dashboard" asp-action="Index" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

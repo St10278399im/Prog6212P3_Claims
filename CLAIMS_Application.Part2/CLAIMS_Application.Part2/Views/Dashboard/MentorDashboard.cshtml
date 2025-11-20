@@ -1,0 +1,97 @@
+﻿@model CLAIMS_Application.Part2.Models.DashboardViewModel
+@{
+    ViewData["Title"] = "Mentor Dashboard";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2>Mentor Dashboard</h2>
+            <p class="text-muted">Welcome, @Model.Username - Review and approve pending claims</p>
+        </div>
+        <div>
+            <div class="btn-group me-2">
+                <button type="button" class="btn btn-outline-success dropdown-toggle" data-bs-toggle="dropdown">
+                    <i class="bi bi-download"></i> Export Claims
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" asp-controller="Mentor" asp-action="ExportClaimsByStatus" asp-route-status="all">All Claims</a></li>
+                    <li><a class="dropdown-item" asp-controller="Mentor" asp-action="ExportClaimsByStatus" asp-route-status="pending">Pending Only</a></li>
+                    <li><a class="dropdown-item" asp-controller="Mentor" asp-action="ExportClaimsByStatus" asp-route-status="approved">Approved Only</a></li>
+                    <li><a class="dropdown-item" asp-controller="Mentor" asp-action="ExportClaimsByStatus" asp-route-status="rejected">Rejected Only</a></li>
+                </ul>
+            </div>
+            <a asp-action="Index" class="btn btn-outline-secondary me-2">Back to Main Dashboard</a>
+            <a asp-controller="Account" asp-action="Logout" class="btn btn-outline-secondary">Logout</a>
+        </div>
+    </div> 
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Pending Claims Section -->
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">Pending Claims for Review (@Model.PendingClaims)</h4>
+        </div>
+        <div class="card-body">
+            @if (Model.Claims != null && Model.Claims.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Claim ID</th>
+                                <th>Title</th>
+                                <th>Lecturer</th>
+                                <th>Submitted Date</th>
+                                <th>Hours</th>
+                                <th>Total Amount</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var claim in Model.Claims)
+                            {
+                                <tr>
+                                    <td><strong>#@claim.Id</strong></td>
+                                    <td>@claim.Title</td>
+                                    <td>@claim.LecturerName</td>
+                                    <td>@claim.SubmittedDate.ToString("yyyy-MM-dd HH:mm")</td>
+                                    <td>@claim.HoursWorked.ToString("F2")</td>
+                                    <td><strong>R @claim.TotalAmount.ToString("F2")</strong></td>
+                                    <td>
+                                        <a asp-controller="Mentor" asp-action="Review" asp-route-id="@claim.Id"
+                                           class="btn btn-sm btn-primary">Review</a>
+                                        <a asp-controller="Claim" asp-action="Details" asp-route-id="@claim.Id"
+                                           class="btn btn-sm btn-info">View Details</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <p class="text-muted">No pending claims for review.</p>
+                    <p>All claims have been processed.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

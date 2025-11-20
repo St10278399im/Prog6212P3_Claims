@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Contract Claim System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-body text-center py-5">
+                        <div class="mb-4">
+                            <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                        <h2 class="mb-3 text-white">Contract Claim System</h2>
+                        <p class="lead text-light mb-4">
+                            Redirecting to your dashboard...
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Redirect to dashboard after 1 second
+        setTimeout(function() {
+            window.location.href = '@Url.Action("Index", "Dashboard")';
+        }, 1000);
+    </script>
+</body>
+</html>

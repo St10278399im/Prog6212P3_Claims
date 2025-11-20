@@ -1,0 +1,201 @@
+﻿@model CLAIMS_Application.Part2.Models.DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container-fluid py-4">
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2>Welcome, @Model.Username</h2>
+        <p class="text-muted">@Model.Role Dashboard - Manage your contract claims</p>
+    </div>
+    <div>
+        @if (Model.Role == "Lecturer")
+        {
+            <a asp-controller="Claim" asp-action="Create" class="btn btn-primary btn-lg me-2">
+                Submit New Claim
+            </a>
+            <a asp-controller="Claim" asp-action="ExportMyClaims" class="btn btn-outline-success me-2">
+                <i class="bi bi-download"></i> Export My Claims
+            </a>
+        }
+        else
+        {
+            <a asp-controller="Claim" asp-action="ExportClaims" class="btn btn-outline-success me-2">
+                <i class="bi bi-download"></i> Export All Claims
+            </a>
+            <a asp-controller="Claim" asp-action="ImportClaims" class="btn btn-outline-info me-2">
+                <i class="bi bi-upload"></i> Import Claims
+            </a>
+        }
+        <a asp-controller="Account" asp-action="Logout" class="btn btn-outline-secondary">Logout</a>
+    </div>
+</div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Claims</h5>
+                    <h2>@Model.TotalClaims</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark">
+                <div class="card-body">
+                    <h5 class="card-title">Pending</h5>
+                    <h2>@Model.PendingClaims</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Approved</h5>
+                    <h2>@Model.ApprovedClaims</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-danger text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Rejected</h5>
+                    <h2>@Model.RejectedClaims</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Role-specific content -->
+    @if (Model.Role == "ProgrammeCoordinator" || Model.Role == "Administrator")
+    {
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">Mentor Actions</h4>
+                        <a asp-action="MentorDashboard" class="btn btn-primary">Go to Mentor Dashboard</a>
+                    </div>
+                    <div class="card-body">
+                        <p>As a @Model.Role, you can review and approve pending claims.</p>
+                        <p class="mb-0">
+                            <strong>Pending Claims: @Model.PendingClaims</strong> -
+                            <a asp-action="MentorDashboard" class="text-decoration-none">Review now</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <!-- Claims Table -->
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">
+                @if (Model.Role == "Lecturer")
+                {
+                    <text>My Claims</text>
+                }
+                else
+                {
+                    <text>All Claims</text>
+                }
+            </h4>
+        </div>
+        <div class="card-body">
+            @if (Model.Claims != null && Model.Claims.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Claim ID</th>
+                                <th>Title</th>
+                                <th>Lecturer</th>
+                                <th>Submitted Date</th>
+                                <th>Hours</th>
+                                <th>Total Amount</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var claim in Model.Claims)
+                            {
+                                <tr>
+                                    <td><strong>#@claim.Id</strong></td>
+                                    <td>@claim.Title</td>
+                                    <td>@claim.LecturerName</td>
+                                    <td>@claim.SubmittedDate.ToString("yyyy-MM-dd HH:mm")</td>
+                                    <td>@claim.HoursWorked.ToString("F2")</td>
+                                    <td><strong>R @claim.TotalAmount.ToString("F2")</strong></td>
+                                    <td>
+                                        @if (claim.Status == ClaimStatus.Pending)
+                                        {
+                                            <span class="badge bg-warning text-dark">Pending</span>
+                                        }
+                                        else if (claim.Status == ClaimStatus.Approved)
+                                        {
+                                            <span class="badge bg-success">Approved</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">Rejected</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Claim" asp-action="Details" asp-route-id="@claim.Id"
+                                           class="btn btn-sm btn-info">View</a>
+                                        
+                                        @if (Model.Role == "Lecturer" && claim.Status == ClaimStatus.Pending)
+                                        {
+                                            <a asp-controller="Claim" asp-action="Edit" asp-route-id="@claim.Id"
+                                               class="btn btn-sm btn-warning">Edit</a>
+                                        }
+                                        
+                                        @if ((Model.Role == "ProgrammeCoordinator" || Model.Role == "Administrator") && claim.Status == ClaimStatus.Pending)
+                                        {
+                                            <a asp-controller="Mentor" asp-action="Review" asp-route-id="@claim.Id"
+                                               class="btn btn-sm btn-primary">Review</a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <p class="text-muted">No claims found.</p>
+                    @if (Model.Role == "Lecturer")
+                    {
+                        <a asp-controller="Claim" asp-action="Create" class="btn btn-primary">Submit Your First Claim</a>
+                    }
+                    else
+                    {
+                        <p>There are no claims to display.</p>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
