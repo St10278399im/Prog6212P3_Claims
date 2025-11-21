@@ -8,17 +8,24 @@ namespace CLAIMS_Application.Part2.Controllers
     {
         public IActionResult Index()
         {
-            // Access claims via the static method
             var allClaims = ClaimController.GetClaims();
-
             var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
             var userName = User.FindFirst(ClaimTypes.GivenName)?.Value;
             var userEmail = User.FindFirst(ClaimTypes.Name)?.Value;
 
-            // Filter claims based on user role
-            var userClaims = userRole == "Lecturer"
-                ? allClaims.Where(c => c.LecturerName.Contains(userName) || c.LecturerName.Contains(userEmail)).ToList()
-                : allClaims;
+            // Lecturers only see their own claims
+            List<MonthlyClaim> userClaims;
+            if (userRole == "Lecturer")
+            {
+                userClaims = allClaims.Where(c =>
+                    c.LecturerName.Contains(userName) ||
+                    c.LecturerName.Contains(userEmail) ||
+                    (userName != null && c.LecturerName != null && c.LecturerName.Contains(userName))).ToList();
+            }
+            else
+            {
+                userClaims = allClaims;
+            }
 
             var model = new DashboardViewModel(userClaims)
             {
@@ -38,14 +45,16 @@ namespace CLAIMS_Application.Part2.Controllers
         {
             var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
 
-            if (userRole != "ProgrammeCoordinator" && userRole != "Administrator")
+            if (userRole != "ProgrammeCoordinator" && userRole != "Administrator" && userRole != "HR")
             {
-                TempData["ErrorMessage"] = "Access denied. Mentor dashboard is only for coordinators and administrators.";
+                TempData["ErrorMessage"] = "Access denied. Mentor dashboard is only for coordinators, administrators, and HR.";
                 return RedirectToAction("AccessDenied", "Account");
             }
 
-            var pendingClaims = ClaimController.GetClaims().Where(c => c.Status == ClaimStatus.Pending).ToList();
-            var model = new DashboardViewModel(pendingClaims)   
+            // Get claims that are ready for current user's review
+            var pendingClaims = GetClaimsForUserReview(userRole);
+
+            var model = new DashboardViewModel(pendingClaims)
             {
                 Username = User.FindFirst(ClaimTypes.GivenName)?.Value,
                 Role = userRole,
@@ -56,5 +65,61 @@ namespace CLAIMS_Application.Part2.Controllers
 
             return View(model);
         }
+
+        [HttpGet]
+        public IActionResult Dashboard()
+        {
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (userRole != "HR" && userRole != "Administrator")
+            {
+                TempData["ErrorMessage"] = "Access denied. HR dashboard is only for HR personnel and administrators.";
+                return RedirectToAction("AccessDenied", "Account");
+            }
+
+            var allUsers = AccountController.GetUsers();
+            var allClaims = ClaimController.GetClaims();
+            var pendingHRClaims = GetPendingHRClaims();
+
+            var model = new HRDashboardViewModel
+            {
+                Username = User.FindFirst(ClaimTypes.GivenName)?.Value,
+                Role = userRole,
+                TotalUsers = allUsers.Count,
+                TotalClaims = allClaims.Count,
+                PendingClaims = pendingHRClaims.Count, // Now shows only claims pending HR review
+                ApprovedClaims = allClaims.Count(c => c.Status == ClaimStatus.Approved),
+                RejectedClaims = allClaims.Count(c => c.Status == ClaimStatus.Rejected),
+                Users = allUsers,
+                Claims = allClaims
+            };
+
+            return View(model);
+        }
+
+        private List<MonthlyClaim> GetClaimsForUserReview(string userRole)
+        {
+            var allClaims = ClaimController.GetClaims();
+
+            return userRole switch
+            {
+                "ProgrammeCoordinator" => allClaims.Where(c => c.CoordinatorStatus == ApprovalStatus.Pending).ToList(),
+                "Administrator" => allClaims.Where(c => c.CoordinatorStatus == ApprovalStatus.Approved &&
+                                                      c.AdministratorStatus == ApprovalStatus.Pending).ToList(),
+                "HR" => allClaims.Where(c => c.CoordinatorStatus == ApprovalStatus.Approved &&
+                                           c.AdministratorStatus == ApprovalStatus.Approved &&
+                                           c.HRStatus == ApprovalStatus.Pending).ToList(),
+                _ => new List<MonthlyClaim>()
+            
+            };
+        }   
+            
+            private List<MonthlyClaim> GetPendingHRClaims()
+        {
+            return ClaimController.GetClaims()
+                .Where(c => c.AdministratorStatus == ApprovalStatus.Approved &&
+                           c.HRStatus == ApprovalStatus.Pending)
+                .ToList();
+        }
+    
     }
 }

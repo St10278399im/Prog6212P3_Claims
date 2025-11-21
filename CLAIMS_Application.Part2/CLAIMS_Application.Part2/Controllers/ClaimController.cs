@@ -1,5 +1,5 @@
-﻿using CLAIMS_Application.Part2.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using CLAIMS_Application.Part2.Models;
 using System.Security.Claims;
 using System.Text;
 
@@ -7,23 +7,46 @@ namespace CLAIMS_Application.Part2.Controllers
 {
     public class ClaimController : Controller
     {
-        private static List<CLAIMS_Application.Part2.Models.MonthlyClaim> _claims = new List<CLAIMS_Application.Part2.Models.MonthlyClaim>();
+        private static List<MonthlyClaim> _claims = new List<MonthlyClaim>();
         private static int _nextClaimId = 1;
+
+        public static List<MonthlyClaim> GetClaims()
+        {
+            return _claims;
+        }
 
         [HttpGet]
         public IActionResult Create()
         {
-            return View(new CLAIMS_Application.Part2.Models.MonthlyClaim());
+            return View(new MonthlyClaim());
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(CLAIMS_Application.Part2.Models.MonthlyClaim model)
+        public IActionResult Create(MonthlyClaim model)
         {
+            if (!ModelState.IsValid)
+            {
+                // Debug: Check what validation errors exist
+                foreach (var state in ModelState)
+                {
+                    foreach (var error in state.Value.Errors)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Validation Error in {state.Key}: {error.ErrorMessage}");
+                    }
+                }
+
+                TempData["ErrorMessage"] = "Please fix the validation errors below.";
+                return View(model);
+            }
 
             try
             {
-                var newClaim = new CLAIMS_Application.Part2.Models.MonthlyClaim
+                // Get user information for LecturerName
+                var userFirstName = User.FindFirst(ClaimTypes.GivenName)?.Value ?? "Unknown";
+                var userLastName = User.FindFirst(ClaimTypes.Surname)?.Value ?? "User";
+                var lecturerName = $"{userFirstName} {userLastName}";
+
+                var newClaim = new MonthlyClaim
                 {
                     Id = _nextClaimId++,
                     Title = model.Title,
@@ -33,17 +56,33 @@ namespace CLAIMS_Application.Part2.Controllers
                     AdditionalNotes = model.AdditionalNotes,
                     Status = ClaimStatus.Pending,
                     SubmittedDate = DateTime.Now,
-                    LecturerName = User.FindFirst(ClaimTypes.GivenName)?.Value + " " + User.FindFirst(ClaimTypes.Surname)?.Value
+                    LecturerName = lecturerName,
+
+                    // Initialize all approval statuses to Pending - these should be empty/null initially
+                    CoordinatorStatus = ApprovalStatus.Pending,
+                    AdministratorStatus = ApprovalStatus.Pending,
+                    HRStatus = ApprovalStatus.Pending,
+
+                    // Leave review fields empty - they will be filled during the review process
+                    CoordinatorReviewBy = null,
+                    CoordinatorReviewDate = null,
+                    CoordinatorReviewNotes = null,
+                    AdministratorReviewBy = null,
+                    AdministratorReviewDate = null,
+                    AdministratorReviewNotes = null,
+                    HRReviewBy = null,
+                    HRReviewDate = null,
+                    HRReviewNotes = null
                 };
 
                 _claims.Add(newClaim);
 
-                TempData["SuccessMessage"] = $"Claim submitted successfully! Total Amount: R{newClaim.TotalAmount:F2}";
+                TempData["SuccessMessage"] = $"Claim submitted successfully! It will be reviewed by Coordinator, Administrator, and HR.";
                 return RedirectToAction("Index", "Dashboard");
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "An error occurred while submitting your claim. Please try again.";
+                TempData["ErrorMessage"] = $"An error occurred while submitting your claim: {ex.Message}";
                 return View(model);
             }
         }
@@ -69,12 +108,19 @@ namespace CLAIMS_Application.Part2.Controllers
                 TempData["ErrorMessage"] = "Claim not found.";
                 return RedirectToAction("Index", "Dashboard");
             }
+
+            if (claim.Status != ClaimStatus.Pending)
+            {
+                TempData["ErrorMessage"] = "Cannot edit claim that is already under review.";
+                return RedirectToAction("Details", new { id });
+            }
+
             return View(claim);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, CLAIMS_Application.Part2.Models.MonthlyClaim model)
+        public IActionResult Edit(int id, MonthlyClaim model)
         {
             if (id != model.Id)
             {
@@ -95,7 +141,12 @@ namespace CLAIMS_Application.Part2.Controllers
                 return RedirectToAction("Index", "Dashboard");
             }
 
-            // Update only editable fields
+            if (existingClaim.Status != ClaimStatus.Pending)
+            {
+                TempData["ErrorMessage"] = "Cannot edit claim that is already under review.";
+                return RedirectToAction("Details", new { id });
+            }
+
             existingClaim.Title = model.Title;
             existingClaim.Description = model.Description;
             existingClaim.HoursWorked = model.HoursWorked;
@@ -116,21 +167,35 @@ namespace CLAIMS_Application.Part2.Controllers
                 return RedirectToAction("Index", "Dashboard");
             }
 
+            if (claim.Status != ClaimStatus.Pending)
+            {
+                TempData["ErrorMessage"] = "Cannot delete claim that is already under review.";
+                return RedirectToAction("Details", new { id });
+            }
+
             _claims.Remove(claim);
             TempData["SuccessMessage"] = "Claim deleted successfully!";
             return RedirectToAction("Index", "Dashboard");
         }
+
         [HttpGet]
         public IActionResult ExportClaims(string format = "csv")
         {
-            var MonthlyClaims = _claims;
+            var userRole = User?.FindFirst(ClaimTypes.Role)?.Value;
+            if (userRole != "ProgrammeCoordinator" && userRole != "Administrator" && userRole != "HR")
+            {
+                TempData["ErrorMessage"] = "Access denied. Only coordinators, administrators, and HR can export all claims.";
+                return RedirectToAction("Index", "Dashboard");
+            }
+
+            var claims = _claims;
 
             if (format.ToLower() == "csv")
             {
                 var csvContent = new StringBuilder();
                 csvContent.AppendLine(MonthlyClaim.GetCsvHeaders());
 
-                foreach (var claim in MonthlyClaims)
+                foreach (var claim in claims)
                 {
                     csvContent.AppendLine(claim.ToCsv());
                 }
@@ -140,7 +205,6 @@ namespace CLAIMS_Application.Part2.Controllers
             }
             else
             {
-                // Default to CSV
                 TempData["ErrorMessage"] = "Unsupported export format. Using CSV.";
                 return ExportClaims("csv");
             }
@@ -204,7 +268,6 @@ namespace CLAIMS_Application.Part2.Controllers
 
                 using (var stream = new StreamReader(file.OpenReadStream()))
                 {
-                    // Skip header row
                     var header = await stream.ReadLineAsync();
 
                     while (!stream.EndOfStream)
@@ -213,11 +276,15 @@ namespace CLAIMS_Application.Part2.Controllers
                         if (string.IsNullOrWhiteSpace(line)) continue;
 
                         var claim = MonthlyClaim.FromCsv(line);
-                        if (claim != null && claim.Id == 0) // Only import new claims (ID = 0)
+                        if (claim != null && claim.Id == 0)
                         {
                             claim.Id = _nextClaimId++;
                             claim.SubmittedDate = DateTime.Now;
                             claim.LecturerName = claim.LecturerName ?? "Imported User";
+                            claim.Status = ClaimStatus.Pending;
+                            claim.CoordinatorStatus = ApprovalStatus.Pending;
+                            claim.AdministratorStatus = ApprovalStatus.Pending;
+                            claim.HRStatus = ApprovalStatus.Pending;
 
                             _claims.Add(claim);
                             importedCount++;
@@ -237,12 +304,6 @@ namespace CLAIMS_Application.Part2.Controllers
                 TempData["ErrorMessage"] = $"Error importing file: {ex.Message}";
                 return View();
             }
-        }
-
-        // Helper method for other controllers to access claims
-        public static List<CLAIMS_Application.Part2.Models.MonthlyClaim> GetClaims()
-        {
-            return _claims;
         }
     }
 }

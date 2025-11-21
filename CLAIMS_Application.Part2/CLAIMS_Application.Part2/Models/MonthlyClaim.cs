@@ -15,7 +15,7 @@ namespace CLAIMS_Application.Part2.Models
         [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters")]
         public string Description { get; set; }
 
-        public string LecturerName { get; set; }
+        public string? LecturerName { get; set; }
 
         [Required(ErrorMessage = "Hours worked is required")]
         [Range(0.1, 1000, ErrorMessage = "Hours worked must be between 0.1 and 1000")]
@@ -31,19 +31,43 @@ namespace CLAIMS_Application.Part2.Models
         public decimal TotalAmount => HoursWorked * HourlyRate;
         public ClaimStatus Status { get; set; }
         public DateTime SubmittedDate { get; set; }
-        public string ReviewedBy { get; set; }
-        public DateTime? ReviewedDate { get; set; }
-        public string ReviewNotes { get; set; }
+
+        // Multi-level approval fields - MAKE THESE OPTIONAL (remove [Required])
+        public string? CoordinatorReviewBy { get; set; }
+        public DateTime? CoordinatorReviewDate { get; set; }
+        public string? CoordinatorReviewNotes { get; set; }
+        public ApprovalStatus CoordinatorStatus { get; set; }
+
+        public string? AdministratorReviewBy { get; set; }
+        public DateTime? AdministratorReviewDate { get; set; }
+        public string? AdministratorReviewNotes { get; set; }
+        public ApprovalStatus AdministratorStatus { get; set; }
+
+        public string? HRReviewBy { get; set; }
+        public DateTime? HRReviewDate { get; set; }
+        public string? HRReviewNotes { get; set; }
+        public ApprovalStatus HRStatus { get; set; }
+
+        // Final status determined by all approvals/rejections
+        public bool IsFullyApproved => CoordinatorStatus == ApprovalStatus.Approved &&
+                                      AdministratorStatus == ApprovalStatus.Approved &&
+                                      HRStatus == ApprovalStatus.Approved;
+
+        public bool IsFullyRejected => CoordinatorStatus == ApprovalStatus.Rejected &&
+                                      AdministratorStatus == ApprovalStatus.Rejected &&
+                                      HRStatus == ApprovalStatus.Rejected;
+
+        public bool IsPendingReview => !IsFullyApproved && !IsFullyRejected;
 
         // Export methods
         public string ToCsv()
         {
-            return $"{Id},{Title},{Description},{LecturerName},{HoursWorked},{HourlyRate},{TotalAmount},{Status},{SubmittedDate:yyyy-MM-dd HH:mm},{ReviewedBy},{ReviewedDate:yyyy-MM-dd HH:mm},{ReviewNotes?.Replace(",", ";")},{AdditionalNotes?.Replace(",", ";")}";
+            return $"{Id},{Title},{Description},{LecturerName},{HoursWorked},{HourlyRate},{TotalAmount},{Status},{SubmittedDate:yyyy-MM-dd HH:mm},{CoordinatorReviewBy},{CoordinatorReviewDate:yyyy-MM-dd HH:mm},{CoordinatorReviewNotes?.Replace(",", ";")},{AdministratorReviewBy},{AdministratorReviewDate:yyyy-MM-dd HH:mm},{AdministratorReviewNotes?.Replace(",", ";")},{HRReviewBy},{HRReviewDate:yyyy-MM-dd HH:mm},{HRReviewNotes?.Replace(",", ";")},{AdditionalNotes?.Replace(",", ";")}";
         }
 
         public static string GetCsvHeaders()
         {
-            return "Id,Title,Description,LecturerName,HoursWorked,HourlyRate,TotalAmount,Status,SubmittedDate,ReviewedBy,ReviewedDate,ReviewNotes,AdditionalNotes";
+            return "Id,Title,Description,LecturerName,HoursWorked,HourlyRate,TotalAmount,Status,SubmittedDate,CoordinatorReviewBy,CoordinatorReviewDate,CoordinatorReviewNotes,AdministratorReviewBy,AdministratorReviewDate,AdministratorReviewNotes,HRReviewBy,HRReviewDate,HRReviewNotes,AdditionalNotes";
         }
 
         public static MonthlyClaim FromCsv(string csvLine)
@@ -62,15 +86,29 @@ namespace CLAIMS_Application.Part2.Models
                 HourlyRate = decimal.TryParse(values[5], out decimal rate) ? rate : 0,
                 Status = Enum.TryParse<ClaimStatus>(values[7], out var status) ? status : ClaimStatus.Pending,
                 SubmittedDate = DateTime.TryParse(values[8], out var submitted) ? submitted : DateTime.Now,
-                ReviewedBy = values.Length > 9 ? values[9] : string.Empty,
-                ReviewedDate = values.Length > 10 && DateTime.TryParse(values[10], out var reviewed) ? reviewed : null,
-                ReviewNotes = values.Length > 11 ? values[11].Replace(";", ",") : string.Empty,
-                AdditionalNotes = values.Length > 12 ? values[12].Replace(";", ",") : string.Empty
+                CoordinatorReviewBy = values.Length > 9 ? values[9] : string.Empty,
+                CoordinatorReviewDate = values.Length > 10 && DateTime.TryParse(values[10], out var coordReviewed) ? coordReviewed : null,
+                CoordinatorReviewNotes = values.Length > 11 ? values[11].Replace(";", ",") : string.Empty,
+                AdministratorReviewBy = values.Length > 12 ? values[12] : string.Empty,
+                AdministratorReviewDate = values.Length > 13 && DateTime.TryParse(values[13], out var adminReviewed) ? adminReviewed : null,
+                AdministratorReviewNotes = values.Length > 14 ? values[14].Replace(";", ",") : string.Empty,
+                HRReviewBy = values.Length > 15 ? values[15] : string.Empty,
+                HRReviewDate = values.Length > 16 && DateTime.TryParse(values[16], out var hrReviewed) ? hrReviewed : null,
+                HRReviewNotes = values.Length > 17 ? values[17].Replace(";", ",") : string.Empty,
+                AdditionalNotes = values.Length > 18 ? values[18].Replace(";", ",") : string.Empty
             };
         }
     }
 
     public enum ClaimStatus
+    {
+        Pending,
+        UnderReview,
+        Approved,
+        Rejected
+    }
+
+    public enum ApprovalStatus
     {
         Pending,
         Approved,

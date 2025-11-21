@@ -28,8 +28,19 @@
                         </div>
                     }
 
-                    <!-- Display individual field errors -->
-                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                    <!-- Show ALL validation errors clearly -->
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            <h5>Please fix the following errors:</h5>
+                            <ul class="mb-0">
+                                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                {
+                                    <li>@error.ErrorMessage</li>
+                                }
+                            </ul>
+                        </div>
+                    }
 
                     <form asp-action="Create" method="post">
                         <div class="mb-3">

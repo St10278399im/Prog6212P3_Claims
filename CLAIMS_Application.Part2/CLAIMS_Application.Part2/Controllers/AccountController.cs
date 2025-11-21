@@ -11,9 +11,6 @@ namespace CLAIMS_Application.Part2.Controllers
         private static List<User> _users = new List<User>();
         private static int _nextUserId = 1;
 
-        // ---------------------------
-        // STATIC CONSTRUCTOR ADDED ✔
-        // ---------------------------
         static AccountController()
         {
             if (_users.Count == 0)
@@ -66,6 +63,16 @@ namespace CLAIMS_Application.Part2.Controllers
             }
         }
 
+        public static List<User> GetUsers()
+        {
+            return _users;
+        }
+
+        public static int GetNextUserId()
+        {
+            return _nextUserId++;
+        }
+
         [HttpGet]
         public IActionResult Login()
         {
@@ -95,11 +102,8 @@ namespace CLAIMS_Application.Part2.Controllers
                 new Claim(ClaimTypes.Role, user.Role)
             };
 
-            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(identity)
-            );
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
             return RedirectToAction("Index", "Dashboard");
         }
@@ -138,17 +142,6 @@ namespace CLAIMS_Application.Part2.Controllers
 
             TempData["SuccessMessage"] = "Registration successful. Please login.";
             return RedirectToAction("Login");
-        }
-
-        // Static helpers
-        public static List<User> GetUsers()
-        {
-            return _users;
-        }
-
-        public static int GetNextUserId()
-        {
-            return _nextUserId++;
         }
 
         [HttpGet]

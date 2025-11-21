@@ -9,6 +9,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Review Claim #@Model.Id</h3>
+                    <p class="mb-0 text-muted">Current Status: @Model.Status</p>
                 </div>
                 <div class="card-body">
                     @if (TempData["ErrorMessage"] != null)
@@ -50,6 +51,70 @@
                                 <dd class="col-sm-8">@Model.AdditionalNotes</dd>
                             }
                         </dl>
+                    </div>
+
+                    <!-- Approval Progress -->
+                    <div class="mb-4">
+                        <h5>Approval Progress</h5>
+                        <div class="progress mb-3" style="height: 25px;">
+                            @{
+                                var progress = 0;
+                                if (Model.CoordinatorStatus != ApprovalStatus.Pending) progress += 33;
+                                if (Model.AdministratorStatus != ApprovalStatus.Pending) progress += 33;
+                                if (Model.HRStatus != ApprovalStatus.Pending) progress += 34;
+                            }
+                            <div class="progress-bar bg-success" role="progressbar" style="width: @progress%" aria-valuenow="@progress" aria-valuemin="0" aria-valuemax="100">
+                                @progress% Complete
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card @(Model.CoordinatorStatus == ApprovalStatus.Approved ? "bg-success text-white" : Model.CoordinatorStatus == ApprovalStatus.Rejected ? "bg-danger text-white" : "bg-light")">
+                                    <div class="card-body text-center">
+                                        <h6>Coordinator</h6>
+                                        <p class="mb-1">@Model.CoordinatorStatus</p>
+                                        @if (Model.CoordinatorReviewDate.HasValue)
+                                        {
+                                            <small>By: @Model.CoordinatorReviewBy</small>
+                                        
+                                            <br>
+                                            <small>On: @Model.CoordinatorReviewDate.Value.ToString("MM/dd HH:mm")</small>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card @(Model.AdministratorStatus == ApprovalStatus.Approved ? "bg-success text-white" : Model.AdministratorStatus == ApprovalStatus.Rejected ? "bg-danger text-white" : "bg-light")">
+                                    <div class="card-body text-center">
+                                        <h6>Administrator</h6>
+                                        <p class="mb-1">@Model.AdministratorStatus</p>
+                                        @if (Model.AdministratorReviewDate.HasValue)
+                                        {
+                                            <small>By: @Model.AdministratorReviewBy</small>
+                                        
+                                            <br>
+                                            <small>On: @Model.AdministratorReviewDate.Value.ToString("MM/dd HH:mm")</small>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card @(Model.HRStatus == ApprovalStatus.Approved ? "bg-success text-white" : Model.HRStatus == ApprovalStatus.Rejected ? "bg-danger text-white" : "bg-light")">
+                                    <div class="card-body text-center">
+                                        <h6>HR</h6>
+                                        <p class="mb-1">@Model.HRStatus</p>
+                                        @if (Model.HRReviewDate.HasValue)
+                                        {
+                                            <small>By: @Model.HRReviewBy</small>
+                                        
+                                            <br>
+                                            <small>On: @Model.HRReviewDate.Value.ToString("MM/dd HH:mm")</small>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Review Forms -->
@@ -95,4 +160,4 @@
             </div>
         </div>
     </div>
-</div>
+</div>>
