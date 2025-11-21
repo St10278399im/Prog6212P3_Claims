@@ -1,4 +1,5 @@
-﻿namespace CLAIMS_Application.Part2.Models
+﻿
+namespace CLAIMS_Application.Part2.Models
 {
     public class User
     {
@@ -10,5 +11,10 @@
         public string Role { get; set; } // Lecturer, ProgrammeCoordinator, AcademicManager
         public DateTime CreatedDate { get; set; }
         public string FullName => $"{FirstName} {LastName}";
+
+        public IAsyncEnumerable<char>? ToCsv()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

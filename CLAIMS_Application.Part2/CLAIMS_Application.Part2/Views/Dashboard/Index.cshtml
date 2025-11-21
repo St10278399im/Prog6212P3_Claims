@@ -4,33 +4,33 @@
 }
 
 <div class="container-fluid py-4">
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-        <h2>Welcome, @Model.Username</h2>
-        <p class="text-muted">@Model.Role Dashboard - Manage your contract claims</p>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2>Welcome, @Model.Username</h2>
+            <p class="text-muted">@Model.Role Dashboard - Manage your contract claims</p>
+        </div>
+        <div>
+            @if (Model.Role == "Lecturer")
+            {
+                <a asp-controller="Claim" asp-action="Create" class="btn btn-primary btn-lg me-2">
+                    Submit New Claim
+                </a>
+                <a asp-controller="Claim" asp-action="ExportMyClaims" class="btn btn-outline-success me-2">
+                    <i class="bi bi-download"></i> Export My Claims
+                </a>
+            }
+            else
+            {
+                <a asp-controller="Claim" asp-action="ExportClaims" class="btn btn-outline-success me-2">
+                    <i class="bi bi-download"></i> Export All Claims
+                </a>
+                <a asp-controller="Claim" asp-action="ImportClaims" class="btn btn-outline-info me-2">
+                    <i class="bi bi-upload"></i> Import Claims
+                </a>
+            }
+            <a asp-controller="Account" asp-action="Logout" class="btn btn-outline-secondary">Logout</a>
+        </div>
     </div>
-    <div>
-        @if (Model.Role == "Lecturer")
-        {
-            <a asp-controller="Claim" asp-action="Create" class="btn btn-primary btn-lg me-2">
-                Submit New Claim
-            </a>
-            <a asp-controller="Claim" asp-action="ExportMyClaims" class="btn btn-outline-success me-2">
-                <i class="bi bi-download"></i> Export My Claims
-            </a>
-        }
-        else
-        {
-            <a asp-controller="Claim" asp-action="ExportClaims" class="btn btn-outline-success me-2">
-                <i class="bi bi-download"></i> Export All Claims
-            </a>
-            <a asp-controller="Claim" asp-action="ImportClaims" class="btn btn-outline-info me-2">
-                <i class="bi bi-upload"></i> Import Claims
-            </a>
-        }
-        <a asp-controller="Account" asp-action="Logout" class="btn btn-outline-secondary">Logout</a>
-    </div>
-</div>
 
     @if (TempData["SuccessMessage"] != null)
     {
@@ -105,7 +105,7 @@
             </div>
         </div>
     }
-    @if (Model.Role == "HR" || Model.Role == "Administrator")
+    @if (Model.Role == "HR")
     {
         <div class="row mb-4">
             <div class="col-12">
@@ -183,13 +183,13 @@
                                     <td>
                                         <a asp-controller="Claim" asp-action="Details" asp-route-id="@claim.Id"
                                            class="btn btn-sm btn-info">View</a>
-                                        
+
                                         @if (Model.Role == "Lecturer" && claim.Status == ClaimStatus.Pending)
                                         {
                                             <a asp-controller="Claim" asp-action="Edit" asp-route-id="@claim.Id"
                                                class="btn btn-sm btn-warning">Edit</a>
                                         }
-                                        
+
                                         @if ((Model.Role == "ProgrammeCoordinator" || Model.Role == "Administrator") && claim.Status == ClaimStatus.Pending)
                                         {
                                             <a asp-controller="Mentor" asp-action="Review" asp-route-id="@claim.Id"

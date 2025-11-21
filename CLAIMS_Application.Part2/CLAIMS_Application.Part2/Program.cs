@@ -1,5 +1,7 @@
 using CLAIMS_Application.Part2.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +33,11 @@ builder.Services.AddHttpContextAccessor();
 
 // Add logging
 builder.Services.AddLogging();
+
+builder.Services.AddDbContext<ClaimsContext>(options =>
+{
+    options.UseSqlServer("Server=claimsapps.database.windows.net;Database=ClaimsDB;User Id=localsql;Password=ClaimsLogServ1;Encrypt=True;TrustServerCertificate=True");
+});
 
 // Add anti-forgery (already included by default, but explicit for clarity)
 builder.Services.AddAntiforgery(options =>

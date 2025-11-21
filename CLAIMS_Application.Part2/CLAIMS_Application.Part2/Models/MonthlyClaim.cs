@@ -63,6 +63,8 @@ namespace CLAIMS_Application.Part2.Models
         public string ToCsv()
         {
             return $"{Id},{Title},{Description},{LecturerName},{HoursWorked},{HourlyRate},{TotalAmount},{Status},{SubmittedDate:yyyy-MM-dd HH:mm},{CoordinatorReviewBy},{CoordinatorReviewDate:yyyy-MM-dd HH:mm},{CoordinatorReviewNotes?.Replace(",", ";")},{AdministratorReviewBy},{AdministratorReviewDate:yyyy-MM-dd HH:mm},{AdministratorReviewNotes?.Replace(",", ";")},{HRReviewBy},{HRReviewDate:yyyy-MM-dd HH:mm},{HRReviewNotes?.Replace(",", ";")},{AdditionalNotes?.Replace(",", ";")}";
+
+
         }
 
         public static string GetCsvHeaders()
@@ -98,6 +100,10 @@ namespace CLAIMS_Application.Part2.Models
                 AdditionalNotes = values.Length > 18 ? values[18].Replace(";", ",") : string.Empty
             };
         }
+        public decimal CalculateTotalAmount()
+        {
+            return HoursWorked * HourlyRate; //10 x 2 = 20
+        }
     }
 
     public enum ClaimStatus
@@ -114,4 +120,6 @@ namespace CLAIMS_Application.Part2.Models
         Approved,
         Rejected
     }
+
+
 }
