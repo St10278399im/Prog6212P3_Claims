@@ -36,7 +36,7 @@ builder.Services.AddLogging();
 
 builder.Services.AddDbContext<ClaimsContext>(options =>
 {
-    options.UseSqlServer("Server=claimsapps.database.windows.net;Database=ClaimsDB;User Id=localsql;Password=ClaimsLogServ1;Encrypt=True;TrustServerCertificate=True");
+    options.UseSqlServer("Server=claimsapps.database.windows.net;Database=ClaimsDB;User Id=localsql;Password=ClaimsLogServ1;Encrypt=True;Trusted_Connection=True;TrustServerCertificate=True");
 });
 
 // Add anti-forgery (already included by default, but explicit for clarity)
