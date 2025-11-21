@@ -81,6 +81,17 @@ namespace CLAIMS_Application.Part2.Controllers
             return RedirectToAction("Login");
         }
 
+            public static List<User> GetUsers()
+        {
+            return _users;
+        }
+
+        public static int GetNextUserId()
+        {
+            return _nextUserId++;
+        
+        }
+
         [HttpGet]
         public async Task<IActionResult> Logout()
         {

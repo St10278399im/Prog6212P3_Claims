@@ -1,0 +1,194 @@
+﻿@model CLAIMS_Application.Part2.Models.HRDashboardViewModel
+@{
+    ViewData["Title"] = "HR Dashboard";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2>HR Dashboard</h2>
+            <p class="text-muted">Welcome, @Model.Username - Human Resources Management</p>
+        </div>
+        <div>
+            <div class="btn-group me-2">
+                <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown">
+                    <i class="bi bi-download"></i> Export Data
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" asp-action="ExportUsers">Export Users</a></li>
+                    <li><a class="dropdown-item" asp-controller="Claim" asp-action="ExportClaims">Export Claims</a></li>
+                    <li><a class="dropdown-item" asp-action="ExportAllData">Export All Data</a></li>
+                </ul>
+            </div>
+            <a asp-action="RegisterUser" class="btn btn-primary me-2">
+                <i class="bi bi-person-plus"></i> Register User
+            </a>
+            <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-secondary me-2">Main Dashboard</a>
+            <a asp-controller="Account" asp-action="Logout" class="btn btn-outline-secondary">Logout</a>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Users</h5>
+                    <h2>@Model.TotalUsers</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Claims</h5>
+                    <h2>@Model.TotalClaims</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card bg-warning text-dark">
+                <div class="card-body">
+                    <h5 class="card-title">Pending</h5>
+                    <h2>@Model.PendingClaims</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Approved</h5>
+                    <h2>@Model.ApprovedClaims</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card bg-danger text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Rejected</h5>
+                    <h2>@Model.RejectedClaims</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Users Card -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">User Management</h4>
+                    <a asp-action="ManageUsers" class="btn btn-sm btn-outline-primary">Manage Users</a>
+                </div>
+                <div class="card-body">
+                    @if (Model.Users.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Joined</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var user in Model.Users.Take(5))
+                                    {
+                                        <tr>
+                                            <td>@user.FullName</td>
+                                            <td>@user.Email</td>
+                                            <td><span class="badge bg-secondary">@user.Role</span></td>
+                                            <td>@user.CreatedDate.ToString("yyyy-MM-dd")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        @if (Model.Users.Count > 5)
+                        {
+                            <div class="text-center mt-2">
+                                <small class="text-muted">Showing 5 of @Model.Users.Count users</small>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-muted">No users registered.</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Claims Card -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">Recent Claims</h4>
+                </div>
+                <div class="card-body">
+                    @if (Model.Claims.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Lecturer</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var claim in Model.Claims.OrderByDescending(c => c.SubmittedDate).Take(5))
+                                    {
+                                        <tr>
+                                            <td>#@claim.Id</td>
+                                            <td>@claim.LecturerName</td>
+                                            <td>R @claim.TotalAmount.ToString("F2")</td>
+                                            <td>
+                                                @if (claim.Status == ClaimStatus.Pending)
+                                                {
+                                                    <span class="badge bg-warning text-dark">Pending</span>
+                                                }
+                                                else if (claim.Status == ClaimStatus.Approved)
+                                                {
+                                                    <span class="badge bg-success">Approved</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-danger">Rejected</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No claims submitted.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

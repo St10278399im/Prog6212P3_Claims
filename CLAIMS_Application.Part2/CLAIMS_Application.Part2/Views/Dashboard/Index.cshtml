@@ -105,6 +105,26 @@
             </div>
         </div>
     }
+    @if (Model.Role == "HR" || Model.Role == "Administrator")
+    {
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">HR Management</h4>
+                        <a asp-controller="HR" asp-action="Dashboard" class="btn btn-primary">Go to HR Dashboard</a>
+                    </div>
+                    <div class="card-body">
+                        <p>As @Model.Role, you can manage users and access HR features.</p>
+                        <p class="mb-0">
+                            <strong>Total Users: @Model.TotalClaims</strong> -
+                            <a asp-controller="HR" asp-action="Dashboard" class="text-decoration-none">Manage now</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
     <!-- Claims Table -->
     <div class="card">
         <div class="card-header">

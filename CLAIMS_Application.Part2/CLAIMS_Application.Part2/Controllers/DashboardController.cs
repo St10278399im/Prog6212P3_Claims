@@ -20,7 +20,7 @@ namespace CLAIMS_Application.Part2.Controllers
                 ? allClaims.Where(c => c.LecturerName.Contains(userName) || c.LecturerName.Contains(userEmail)).ToList()
                 : allClaims;
 
-            var model = new DashboardViewModel
+            var model = new DashboardViewModel(userClaims)
             {
                 Username = userName,
                 Role = userRole,
@@ -45,7 +45,7 @@ namespace CLAIMS_Application.Part2.Controllers
             }
 
             var pendingClaims = ClaimController.GetClaims().Where(c => c.Status == ClaimStatus.Pending).ToList();
-            var model = new DashboardViewModel
+            var model = new DashboardViewModel(pendingClaims)   
             {
                 Username = User.FindFirst(ClaimTypes.GivenName)?.Value,
                 Role = userRole,

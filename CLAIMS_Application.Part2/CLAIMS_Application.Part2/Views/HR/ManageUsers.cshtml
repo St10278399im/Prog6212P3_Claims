@@ -1,0 +1,93 @@
+﻿@model List<CLAIMS_Application.Part2.Models.User>
+@{
+    ViewData["Title"] = "Manage Users";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2>Manage Users</h2>
+            <p class="text-muted">User account management</p>
+        </div>
+        <div>
+            <a asp-action="ExportUsers" class="btn btn-outline-success me-2">
+                <i class="bi bi-download"></i> Export Users
+            </a>
+            <a asp-action="RegisterUser" class="btn btn-primary me-2">
+                <i class="bi bi-person-plus"></i> Add User
+            </a>
+            <a asp-action="Dashboard" class="btn btn-outline-secondary">Back to HR Dashboard</a>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">System Users (@Model.Count)</h4>
+        </div>
+        <div class="card-body">
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Created Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model)
+                            {
+                                <tr>
+                                    <td>@user.Id</td>
+                                    <td>@user.FullName</td>
+                                    <td>@user.Email</td>
+                                    <td>
+                                        <span class="badge bg-@(user.Role == "Administrator" ? "danger" : user.Role == "HR" ? "info" : user.Role == "ProgrammeCoordinator" ? "warning" : "secondary")">
+                                            @user.Role
+                                        </span>
+                                    </td>
+                                    <td>@user.CreatedDate.ToString("yyyy-MM-dd HH:mm")</td>
+                                    <td>
+                                        <a asp-action="DeleteUser" asp-route-id="@user.Id"
+                                           class="btn btn-sm btn-outline-danger"
+                                           onclick="return confirm('Are you sure you want to delete user @user.FullName?')">
+                                            Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <p class="text-muted">No users found.</p>
+                    <a asp-action="RegisterUser" class="btn btn-primary">Register First User</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
