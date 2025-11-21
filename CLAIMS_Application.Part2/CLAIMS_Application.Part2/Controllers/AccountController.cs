@@ -11,6 +11,61 @@ namespace CLAIMS_Application.Part2.Controllers
         private static List<User> _users = new List<User>();
         private static int _nextUserId = 1;
 
+        // ---------------------------
+        // STATIC CONSTRUCTOR ADDED ✔
+        // ---------------------------
+        static AccountController()
+        {
+            if (_users.Count == 0)
+            {
+                _users.AddRange(new List<User>
+                {
+                    new User
+                    {
+                        Id = 1,
+                        FirstName = "John",
+                        LastName = "Doe",
+                        Email = "JDlecturer@work.com",
+                        Password = "11",
+                        Role = "Lecturer",
+                        CreatedDate = DateTime.Now
+                    },
+                    new User
+                    {
+                        Id = 2,
+                        FirstName = "Sarah",
+                        LastName = "Kyle",
+                        Email = "SKcoordinator@work.com",
+                        Password = "22",
+                        Role = "ProgrammeCoordinator",
+                        CreatedDate = DateTime.Now
+                    },
+                    new User
+                    {
+                        Id = 3,
+                        FirstName = "Adam",
+                        LastName = "Sandler",
+                        Email = "ASadmin@work.com",
+                        Password = "33",
+                        Role = "Administrator",
+                        CreatedDate = DateTime.Now
+                    },
+                    new User
+                    {
+                        Id = 4,
+                        FirstName = "Jenny",
+                        LastName = "Mace",
+                        Email = "JMhr@work.com",
+                        Password = "44",
+                        Role = "HR",
+                        CreatedDate = DateTime.Now
+                    }
+                });
+
+                _nextUserId = 5;
+            }
+        }
+
         [HttpGet]
         public IActionResult Login()
         {
@@ -40,8 +95,11 @@ namespace CLAIMS_Application.Part2.Controllers
                 new Claim(ClaimTypes.Role, user.Role)
             };
 
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(identity)
+            );
 
             return RedirectToAction("Index", "Dashboard");
         }
@@ -77,11 +135,13 @@ namespace CLAIMS_Application.Part2.Controllers
             };
 
             _users.Add(newUser);
+
             TempData["SuccessMessage"] = "Registration successful. Please login.";
             return RedirectToAction("Login");
         }
 
-            public static List<User> GetUsers()
+        // Static helpers
+        public static List<User> GetUsers()
         {
             return _users;
         }
@@ -89,7 +149,6 @@ namespace CLAIMS_Application.Part2.Controllers
         public static int GetNextUserId()
         {
             return _nextUserId++;
-        
         }
 
         [HttpGet]

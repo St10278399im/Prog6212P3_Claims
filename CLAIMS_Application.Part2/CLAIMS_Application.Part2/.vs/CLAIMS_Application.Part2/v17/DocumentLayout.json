@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{B09A089C-609A-4713-BB6E-92648B0A48B0}|CLAIMS_Application.Part2.csproj|c:\\users\\lab_services_student\\desktop\\claims_application.part2\\claims_application.part2\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B09A089C-609A-4713-BB6E-92648B0A48B0}|CLAIMS_Application.Part2.csproj|solutionrelative:controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B09A089C-609A-4713-BB6E-92648B0A48B0}|CLAIMS_Application.Part2.csproj|c:\\users\\lab_services_student\\desktop\\claims_application.part2\\claims_application.part2\\controllers\\claimcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B09A089C-609A-4713-BB6E-92648B0A48B0}|CLAIMS_Application.Part2.csproj|solutionrelative:controllers\\claimcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B09A089C-609A-4713-BB6E-92648B0A48B0}|CLAIMS_Application.Part2.csproj|c:\\users\\lab_services_student\\desktop\\claims_application.part2\\claims_application.part2\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B09A089C-609A-4713-BB6E-92648B0A48B0}|CLAIMS_Application.Part2.csproj|solutionrelative:controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -39,10 +47,6 @@
       "RelativeMoniker": "D:0:0:{B09A089C-609A-4713-BB6E-92648B0A48B0}|CLAIMS_Application.Part2.csproj|solutionrelative:views\\dashboard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B09A089C-609A-4713-BB6E-92648B0A48B0}|CLAIMS_Application.Part2.csproj|c:\\users\\lab_services_student\\desktop\\claims_application.part2\\claims_application.part2\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B09A089C-609A-4713-BB6E-92648B0A48B0}|CLAIMS_Application.Part2.csproj|solutionrelative:controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B09A089C-609A-4713-BB6E-92648B0A48B0}|CLAIMS_Application.Part2.csproj|c:\\users\\lab_services_student\\desktop\\claims_application.part2\\claims_application.part2\\views\\hr\\manageusers.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{B09A089C-609A-4713-BB6E-92648B0A48B0}|CLAIMS_Application.Part2.csproj|solutionrelative:views\\hr\\manageusers.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -75,10 +79,6 @@
       "RelativeMoniker": "D:0:0:{B09A089C-609A-4713-BB6E-92648B0A48B0}|CLAIMS_Application.Part2.csproj|solutionrelative:views\\claim\\import.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B09A089C-609A-4713-BB6E-92648B0A48B0}|CLAIMS_Application.Part2.csproj|c:\\users\\lab_services_student\\desktop\\claims_application.part2\\claims_application.part2\\controllers\\claimcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B09A089C-609A-4713-BB6E-92648B0A48B0}|CLAIMS_Application.Part2.csproj|solutionrelative:controllers\\claimcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B09A089C-609A-4713-BB6E-92648B0A48B0}|CLAIMS_Application.Part2.csproj|c:\\users\\lab_services_student\\desktop\\claims_application.part2\\claims_application.part2\\views\\claim\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{B09A089C-609A-4713-BB6E-92648B0A48B0}|CLAIMS_Application.Part2.csproj|solutionrelative:views\\claim\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -93,11 +93,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "DashboardController.cs",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Controllers\\DashboardController.cs",
               "RelativeDocumentMoniker": "Controllers\\DashboardController.cs",
@@ -110,20 +110,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "HRDashboardViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Models\\HRDashboardViewModel.cs",
-              "RelativeDocumentMoniker": "Models\\HRDashboardViewModel.cs",
-              "ToolTip": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Models\\HRDashboardViewModel.cs",
-              "RelativeToolTip": "Models\\HRDashboardViewModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAuAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T12:15:31.073Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "DashboardViewModel.cs",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Models\\DashboardViewModel.cs",
               "RelativeDocumentMoniker": "Models\\DashboardViewModel.cs",
@@ -131,12 +118,11 @@
               "RelativeToolTip": "Models\\DashboardViewModel.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T20:35:08.68Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-19T20:35:08.68Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "ErrorViewModel.cs",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Models\\ErrorViewModel.cs",
               "RelativeDocumentMoniker": "Models\\ErrorViewModel.cs",
@@ -144,12 +130,11 @@
               "RelativeToolTip": "Models\\ErrorViewModel.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T20:35:12.196Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-19T20:35:12.196Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "LoginViewModel.cs",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Models\\LoginViewModel.cs",
               "RelativeDocumentMoniker": "Models\\LoginViewModel.cs",
@@ -157,12 +142,11 @@
               "RelativeToolTip": "Models\\LoginViewModel.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T20:35:14.908Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-19T20:35:14.908Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "MonthlyClaim.cs",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Models\\MonthlyClaim.cs",
               "RelativeDocumentMoniker": "Models\\MonthlyClaim.cs",
@@ -170,12 +154,11 @@
               "RelativeToolTip": "Models\\MonthlyClaim.cs",
               "ViewState": "AgIAAC0AAADAzMzMzEwYwDYAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T20:35:18.25Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-19T20:35:18.25Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "Register.cshtml",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Views\\Account\\Register.cshtml",
               "RelativeDocumentMoniker": "Views\\Account\\Register.cshtml",
@@ -183,12 +166,49 @@
               "RelativeToolTip": "Views\\Account\\Register.cshtml",
               "ViewState": "AgIAAEsAAAAAAAAAAABwPWIAAABHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-21T06:45:37.107Z",
+              "WhenOpened": "2025-11-21T06:45:37.107Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ClaimController.cs",
+              "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Controllers\\ClaimController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ClaimController.cs",
+              "ToolTip": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Controllers\\ClaimController.cs",
+              "RelativeToolTip": "Controllers\\ClaimController.cs",
+              "ViewState": "AgIAAOEAAABgZGZmZiYgwNYAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T11:39:04.002Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "Controllers\\AccountController.cs",
+              "ViewState": "AgIAACMAAAAAXmZmZmYCwBwAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-14T18:45:21.973Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 7,
+              "Title": "HRDashboardViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Models\\HRDashboardViewModel.cs",
+              "RelativeDocumentMoniker": "Models\\HRDashboardViewModel.cs",
+              "ToolTip": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Models\\HRDashboardViewModel.cs",
+              "RelativeToolTip": "Models\\HRDashboardViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T12:15:31.073Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "RegisterUser.cshtml",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Views\\HR\\RegisterUser.cshtml",
               "RelativeDocumentMoniker": "Views\\HR\\RegisterUser.cshtml",
@@ -196,12 +216,11 @@
               "RelativeToolTip": "Views\\HR\\RegisterUser.cshtml",
               "ViewState": "AgIAACwAAADw/////z8lwE4AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-21T06:39:57.038Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-21T06:39:57.038Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 10,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Views\\Dashboard\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\Dashboard\\Index.cshtml",
@@ -209,25 +228,11 @@
               "RelativeToolTip": "Views\\Dashboard\\Index.cshtml",
               "ViewState": "AgIAAGwAAACAmZmZmVkqwH4AAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-20T11:56:39.011Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-20T11:56:39.011Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "AccountController.cs",
-              "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Controllers\\AccountController.cs",
-              "RelativeDocumentMoniker": "Controllers\\AccountController.cs",
-              "ToolTip": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Controllers\\AccountController.cs",
-              "RelativeToolTip": "Controllers\\AccountController.cs",
-              "ViewState": "AgIAAFwAAAAAAAAAAAAAAGsAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-14T18:45:21.973Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "Dashboard.cshtml",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Views\\HR\\Dashboard.cshtml",
               "RelativeDocumentMoniker": "Views\\HR\\Dashboard.cshtml",
@@ -235,12 +240,11 @@
               "RelativeToolTip": "Views\\HR\\Dashboard.cshtml",
               "ViewState": "AgIAAIEAAADAMTMzM/MmwMEAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-20T12:42:40.361Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-20T12:42:40.361Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "ManageUsers.cshtml",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Views\\HR\\ManageUsers.cshtml",
               "RelativeDocumentMoniker": "Views\\HR\\ManageUsers.cshtml",
@@ -248,12 +252,11 @@
               "RelativeToolTip": "Views\\HR\\ManageUsers.cshtml",
               "ViewState": "AgIAAEAAAAAAAAAAAAAAAFwAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-21T06:40:29.352Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-21T06:40:29.352Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "HRController.cs",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Controllers\\HRController.cs",
               "RelativeDocumentMoniker": "Controllers\\HRController.cs",
@@ -261,12 +264,11 @@
               "RelativeToolTip": "Controllers\\HRController.cs",
               "ViewState": "AgIAACwAAABwM3PB/uYzwC8AAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T12:11:06.682Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-20T12:11:06.682Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "MentorDashboard.cshtml",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Views\\Dashboard\\MentorDashboard.cshtml",
               "RelativeDocumentMoniker": "Views\\Dashboard\\MentorDashboard.cshtml",
@@ -278,7 +280,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Views\\Claim\\Create.cshtml",
               "RelativeDocumentMoniker": "Views\\Claim\\Create.cshtml",
@@ -290,7 +292,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "Import.cshtml",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Views\\Claim\\Import.cshtml",
               "RelativeDocumentMoniker": "Views\\Claim\\Import.cshtml",
@@ -302,19 +304,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "ClaimController.cs",
-              "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Controllers\\ClaimController.cs",
-              "RelativeDocumentMoniker": "Controllers\\ClaimController.cs",
-              "ToolTip": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Controllers\\ClaimController.cs",
-              "RelativeToolTip": "Controllers\\ClaimController.cs",
-              "ViewState": "AgIAAOEAAABgZGZmZiYgwNYAAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T11:39:04.002Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "User.cs",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Models\\User.cs",
               "RelativeDocumentMoniker": "Models\\User.cs",
@@ -326,7 +316,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "MentorController.cs",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\Desktop\\CLAIMS_Application.Part2\\CLAIMS_Application.Part2\\Controllers\\MentorController.cs",
               "RelativeDocumentMoniker": "Controllers\\MentorController.cs",
